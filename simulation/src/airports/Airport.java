@@ -2,7 +2,7 @@ package airports;
 
 import location.Location;
 
-public class Airport {
+public final class Airport {
     private String name;
     private Location location;
     private int importance;
