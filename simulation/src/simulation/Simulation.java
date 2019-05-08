@@ -48,4 +48,11 @@ public class Simulation {
 
     }
 
+    public int getTime() {
+        return time;
+    }
+
+    public Set<Plane> getPlanes() {
+        return planes;
+    }
 }

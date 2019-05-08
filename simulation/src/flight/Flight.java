@@ -27,7 +27,7 @@ public class Flight {
             }
         }
 
-        int randomPassengers = new Random().nextInt(25);
+        int randomPassengers = new Random().nextInt(85);
         this.passengers = randomImportance * randomPassengers;
     }
 

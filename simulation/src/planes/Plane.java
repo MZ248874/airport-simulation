@@ -2,6 +2,7 @@ package planes;
 
 import airports.Airports;
 import airports.AirportsList;
+import data_output.CSV;
 import location.Location;
 import planes.plane_models.PlaneModel;
 import planes.plane_models.PlaneModels;
@@ -9,10 +10,9 @@ import planes.plane_models.PlaneModelsRepository;
 import planes.plane_states.PlaneOnGroundState;
 import planes.plane_states.PlaneState;
 
-import java.util.Objects;
 import java.util.UUID;
 
-public final class Plane {
+public final class Plane implements CSV {
     private final String ID, airline;
     private final PlaneModel planeModel;
 
@@ -48,17 +48,14 @@ public final class Plane {
         planeState.crashed(this);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Plane plane = (Plane) o;
-        return ID.equals(plane.ID);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(ID);
+    public String[] toCSV() {
+        String[] result = {ID, airline, planeModel.getMake(), planeModel.getModelName(),
+                Airports.getInstance().getAirport(departure).toString(),
+                Airports.getInstance().getAirport(arrival).toString(),
+                location.toString(),
+                Integer.toString(currentPassengers), Boolean.toString(isOperational)};
+        return result;
     }
 
     private String generateID() {
