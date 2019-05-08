@@ -1,5 +1,5 @@
 package airports;
 
 public enum AirportsList {
-    WARSAW, BERLIN;
+    WARSAW, BERLIN, WROCLAW, LODZ, GDANSK, KRAKOW, POZNAN
 }

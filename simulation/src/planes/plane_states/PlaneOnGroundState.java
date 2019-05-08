@@ -14,6 +14,8 @@ public class PlaneOnGroundState implements PlaneState {
     private PlaneOnGroundState() {
     }
 
+    private final SimulationStatistics simulationStatistics = SimulationStatistics.getInstance();
+
     @Override
     public void onGround(Plane plane) {
     }
@@ -26,11 +28,11 @@ public class PlaneOnGroundState implements PlaneState {
 
     @Override
     public void crashed(Plane plane) {
-        plane.setPlaneState(PlaneCrashedState.getInstance());
         plane.setLocation(new Location(0, 0, 0));
         plane.setCurrentPassengers(0);
         plane.setOperational(false);
-        SimulationStatistics.getInstance().addCrashedPlane(plane.getID());
+        simulationStatistics.addCrashedPlane(plane.getID());
+        plane.setPlaneState(PlaneCrashedState.getInstance());
     }
 
 }

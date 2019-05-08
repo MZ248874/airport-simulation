@@ -1,10 +1,11 @@
 package simulation;
 
-import airports.AirportsList;
+import airports.Airports;
 import planes.Plane;
-import planes.plane_models.PlaneModels;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class Simulation {
     private static Simulation ourInstance = new Simulation();
@@ -16,36 +17,35 @@ public class Simulation {
     private Simulation() {
     }
 
+    private final SimulationResources resources = SimulationResources.getInstance();
+    private final Airports airports = Airports.getInstance();
     private Set<Plane> planes = new HashSet<>();
-    private int time = 7200;
+    private final int time = 7200;
 
     private void startSimulation(int planeQty) {
         Random random;
         Plane plane;
         Plane.PlaneBuilder planeBuilder = new Plane.PlaneBuilder();
-        List<PlaneModels> planeModels = Arrays.asList(PlaneModels.values());
-        List<String> airlines = Arrays.asList("Ryanair", "WizzAir", "LOT", "Lufthansa", "KLM");
-        List<AirportsList> airportsLists = Arrays.asList(AirportsList.values());
-        int planeModelsSize = planeModels.size();
-        int airlinesSize = airlines.size();
-        int airportsListSize = airportsLists.size();
+
+        int planeModelsSize = resources.planeModels.size();
+        int airlinesSize = resources.airlines.size();
+        int airportsListSize = resources.airportsLists.size();
 
         for (int i = 0; i < planeQty; i++) {
             random = new Random();
             plane = planeBuilder
-                    .buildPlaneModel(planeModels.get(random.nextInt(planeModelsSize)))
-                    .buildAirline(airlines.get(random.nextInt(airlinesSize)))
-                    .buildDeparture(airportsLists.get(random.nextInt(airportsListSize)))
+                    .buildPlaneModel(resources.planeModels.get(random.nextInt(planeModelsSize)))
+                    .buildAirline(resources.airlines.get(random.nextInt(airlinesSize)))
+                    .buildDeparture(resources.airportsLists.get(random.nextInt(airportsListSize)))
                     .build();
             planes.add(plane);
         }
     }
 
-    public static void simulate() {
+    public void simulate(int planeQty) {
+        startSimulation(planeQty);
+
 
     }
 
-    int getTime() {
-        return time;
-    }
 }

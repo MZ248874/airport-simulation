@@ -9,12 +9,15 @@ public class Location {
         this.z = z;
     }
 
-    public void translate(Location loc2, int time) {
+    public void translate(Location loc2, int ratio) {
         LinearEquation linearEquation = new LinearEquation(this, loc2);
-        double ratio = time / distance(loc2);
         int xDifference = loc2.getX() - getX();
-        setX((int) (linearEquation.getA() * xDifference * ratio * getX()));
+        setX((linearEquation.getA() * xDifference * ratio * getX()));
         setZ(getX() + linearEquation.getB());
+    }
+
+    public double distance(Location location) {
+        return Math.sqrt((location.getX() - getX()) ^ 2 + (location.getZ() - getZ()) ^ 2);
     }
 
     public void setX(int x) {
@@ -49,9 +52,4 @@ public class Location {
                 ", z=" + z +
                 '}';
     }
-
-    public double distance(Location location) {
-        return Math.sqrt((location.getX() - getX()) ^ 2 + (location.getZ() - getZ()) ^ 2);
-    }
-
 }

@@ -23,7 +23,7 @@ public final class Plane {
     private AirportsList arrival;
     private boolean isOperational;
 
-    public Plane(PlaneBuilder planeBuilder) {
+    private Plane(PlaneBuilder planeBuilder) {
         this.airline = planeBuilder.airline;
         this.ID = (planeBuilder.airline.substring(0, 3) + generateID()).toUpperCase();
         this.planeModel = planeBuilder.planeModel;
