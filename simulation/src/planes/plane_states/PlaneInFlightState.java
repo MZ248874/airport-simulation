@@ -2,7 +2,7 @@ package planes.plane_states;
 
 import location.Location;
 import planes.Plane;
-import simulation.Simulation;
+import simulation.SimulationStatistics;
 
 public class PlaneInFlightState implements PlaneState {
     private static PlaneInFlightState ourInstance = new PlaneInFlightState();
@@ -17,15 +17,13 @@ public class PlaneInFlightState implements PlaneState {
     @Override
     public void onGround(Plane plane) {
         plane.setDeparture(plane.getArrival());
-        Simulation.getInstance().addFlight();
-        Simulation.getInstance().addTotalPassengers(plane.getCurrentPassengers());
+        SimulationStatistics.getInstance().addFlight();
+        SimulationStatistics.getInstance().addTotalPassengers(plane.getCurrentPassengers());
         plane.setPlaneState(PlaneOnGroundState.getInstance());
     }
 
     @Override
     public void inFlight(Plane plane) {
-        //TODO jakieś rozwiązanie; napisać system komunikatów
-//        throw new UnsupportedOperationException("Already in flight!");
     }
 
     @Override
@@ -34,6 +32,7 @@ public class PlaneInFlightState implements PlaneState {
         plane.setLocation(new Location(0, 0, 0));
         plane.setCurrentPassengers(0);
         plane.setOperational(false);
+        SimulationStatistics.getInstance().addCrashedPlane(plane.getID());
         plane.setPlaneState(PlaneCrashedState.getInstance());
     }
 }

@@ -14,7 +14,6 @@ public class PlaneCrashedState implements PlaneState {
 
     @Override
     public void onGround(Plane plane) {
-        //TODO nie wiem co tu dać :(
     }
 
     @Override

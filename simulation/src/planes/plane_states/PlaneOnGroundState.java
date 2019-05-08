@@ -2,7 +2,7 @@ package planes.plane_states;
 
 import location.Location;
 import planes.Plane;
-import simulation.Simulation;
+import simulation.SimulationStatistics;
 
 public class PlaneOnGroundState implements PlaneState {
     private static PlaneOnGroundState ourInstance = new PlaneOnGroundState();
@@ -16,7 +16,6 @@ public class PlaneOnGroundState implements PlaneState {
 
     @Override
     public void onGround(Plane plane) {
-        throw new UnsupportedOperationException("Plane already on ground");
     }
 
     @Override
@@ -31,7 +30,7 @@ public class PlaneOnGroundState implements PlaneState {
         plane.setLocation(new Location(0, 0, 0));
         plane.setCurrentPassengers(0);
         plane.setOperational(false);
-        Simulation.getInstance().addCrash();
+        SimulationStatistics.getInstance().addCrashedPlane(plane.getID());
     }
 
 }

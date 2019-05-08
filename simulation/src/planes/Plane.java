@@ -1,6 +1,7 @@
 package planes;
 
-import airports.Airport;
+import airports.Airports;
+import airports.AirportsList;
 import location.Location;
 import planes.plane_models.PlaneModel;
 import planes.plane_models.PlaneModels;
@@ -8,31 +9,32 @@ import planes.plane_models.PlaneModelsRepository;
 import planes.plane_states.PlaneOnGroundState;
 import planes.plane_states.PlaneState;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public final class Plane {
     private final String ID, airline;
-    private int currentPassengers;
     private final PlaneModel planeModel;
 
+    private int currentPassengers;
     private Location location;
     private PlaneState planeState;
-    private Airport departure;
-    private Airport arrival;
+    private AirportsList departure;
+    private AirportsList arrival;
     private boolean isOperational;
 
     public Plane(PlaneBuilder planeBuilder) {
         this.airline = planeBuilder.airline;
         this.ID = (planeBuilder.airline.substring(0, 3) + generateID()).toUpperCase();
-        this.location = planeBuilder.location;
         this.planeModel = planeBuilder.planeModel;
         this.departure = planeBuilder.departure;
+        this.location = Airports.getInstance().getAirport(departure).getLocation();
         this.currentPassengers = 0;
         this.planeState = PlaneOnGroundState.getInstance();
         this.isOperational = true;
     }
 
-    public void letsFly(Airport arrival, int passengers) {
+    public void fly(AirportsList arrival, int passengers) {
         planeState.inFlight(this);
         setArrival(arrival);
         setCurrentPassengers(passengers);
@@ -46,35 +48,17 @@ public final class Plane {
         planeState.crashed(this);
     }
 
-    private static class PlaneBuilder {
-        String airline, ID;
-        PlaneModel planeModel;
-        Location location;
-        Airport departure;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plane plane = (Plane) o;
+        return ID.equals(plane.ID);
+    }
 
-        public PlaneBuilder buildAirline(String airline) {
-            this.airline = airline;
-            return this;
-        }
-
-        public PlaneBuilder buildLocation(Location location) {
-            this.location = location;
-            return this;
-        }
-
-        public PlaneBuilder buildPlaneModel(PlaneModels planeModel) {
-            this.planeModel = PlaneModelsRepository.getInstance().getModel(planeModel);
-            return this;
-        }
-
-        public PlaneBuilder buildDeparture(Airport airport) {
-            this.departure = airport;
-            return this;
-        }
-
-        public Plane build() {
-            return new Plane(this);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID);
     }
 
     private String generateID() {
@@ -125,19 +109,45 @@ public final class Plane {
         this.location = location;
     }
 
-    public void setDeparture(Airport departure) {
+    public void setDeparture(AirportsList departure) {
         this.departure = departure;
     }
 
-    public void setArrival(Airport arrival) {
+    public void setArrival(AirportsList arrival) {
         this.arrival = arrival;
     }
 
-    public Airport getDeparture() {
+    public AirportsList getDeparture() {
         return departure;
     }
 
-    public Airport getArrival() {
+    public AirportsList getArrival() {
         return arrival;
+    }
+
+
+    public static class PlaneBuilder {
+        String airline, ID;
+        PlaneModel planeModel;
+        AirportsList departure;
+
+        public PlaneBuilder buildAirline(String airline) {
+            this.airline = airline;
+            return this;
+        }
+
+        public PlaneBuilder buildPlaneModel(PlaneModels planeModel) {
+            this.planeModel = PlaneModelsRepository.getInstance().getModel(planeModel);
+            return this;
+        }
+
+        public PlaneBuilder buildDeparture(AirportsList airport) {
+            this.departure = airport;
+            return this;
+        }
+
+        public Plane build() {
+            return new Plane(this);
+        }
     }
 }

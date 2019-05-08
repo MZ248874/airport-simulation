@@ -12,8 +12,8 @@ public class Airports {
     private Airports() {
     }
 
-    private final Airport warsaw = new Airport("Warsaw Chopin Airport", new Location(123, 231, 123), 5);
-    private final Airport berlin = new Airport("Berlin International Airport", new Location(321, 5423, 754), 10);
+    private static final Airport warsaw = new Airport("Warsaw Chopin Airport", new Location(123, 231, 123), 5);
+    private static final Airport berlin = new Airport("Berlin International Airport", new Location(321, 5423, 754), 10);
 
     public Airport getAirport(AirportsList airport) {
         switch (airport) {
@@ -26,5 +26,6 @@ public class Airports {
         }
         return null;
     }
+
 
 }
