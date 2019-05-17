@@ -31,7 +31,7 @@ public class PlaneOnGroundState implements PlaneState {
         plane.setLocation(new Location(0, 0, 0));
         plane.setCurrentPassengers(0);
         plane.setOperational(false);
-        simulationStatistics.addCrashedPlane(plane.getID());
+        simulationStatistics.addCrashedPlane(plane);
         plane.setPlaneState(PlaneCrashedState.getInstance());
     }
 

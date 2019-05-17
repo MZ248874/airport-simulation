@@ -42,10 +42,7 @@ public class Simulation {
         }
     }
 
-    public void simulate(int planeQty) {
-        startSimulation(planeQty);
-
-
+    public void simulate() {
     }
 
     public int getTime() {

@@ -1,8 +1,5 @@
 package planes.plane_models;
 
-import javax.tools.JavaFileManager;
-import java.awt.*;
-
 public class PlaneModelsRepository {
     private static PlaneModelsRepository ourInstance = new PlaneModelsRepository();
 

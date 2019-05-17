@@ -1,13 +1,18 @@
 package airports;
 
 import data_output.CSV;
+import flight.Flight;
 import location.Location;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public final class Airport implements CSV {
     private String name;
     private Location location;
     private int importance;
     private long passengersServed, planesServed;
+    private Set<Flight> flights;
 
     public Airport(String name, Location location, int importance) {
         this.name = name;
@@ -15,11 +20,11 @@ public final class Airport implements CSV {
         this.importance = importance;
         passengersServed = 0;
         planesServed = 0;
+        flights = new HashSet<>();
     }
 
     public String[] toCSV() {
-        String[] result = {name, location.toString(), Long.toString(planesServed), Long.toString(passengersServed)};
-        return result;
+        return new String[]{name, location.toString(), Long.toString(planesServed), Long.toString(passengersServed)};
     }
 
     @Override
@@ -53,5 +58,13 @@ public final class Airport implements CSV {
 
     public void addPlanesServed() {
         planesServed++;
+    }
+
+    public void addFlight(Flight flight) {
+        flights.add(flight);
+    }
+
+    public Set<Flight> getFlights() {
+        return flights;
     }
 }
