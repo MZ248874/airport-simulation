@@ -4,15 +4,16 @@ import data_output.CSV;
 import flight.Flight;
 import location.Location;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public final class Airport implements CSV {
     private String name;
     private Location location;
     private int importance;
     private long passengersServed, planesServed;
-    private Set<Flight> flights;
+    private List<Flight> flights;
 
     public Airport(String name, Location location, int importance) {
         this.name = name;
@@ -20,7 +21,25 @@ public final class Airport implements CSV {
         this.importance = importance;
         passengersServed = 0;
         planesServed = 0;
-        flights = new HashSet<>();
+
+        //Automatycznie sortująca się lista
+        flights = new ArrayList<>() {
+            @Override
+            public boolean add(Flight flight) {
+                super.add(flight);
+                flights.sort(new sortByImportance());
+                return true;
+            }
+        };
+    }
+
+    //Sortowanie dostępnych lotów według współczynnika "importance" lotniska docelowego
+    private class sortByImportance implements Comparator<Flight> {
+        Airports airports = Airports.getInstance();
+
+        public int compare(Flight flight1, Flight flight2) {
+            return airports.getAirport(flight1.getDestination()).getImportance() - airports.getAirport(flight2.getDestination()).getImportance();
+        }
     }
 
     public String[] toCSV() {
@@ -64,7 +83,11 @@ public final class Airport implements CSV {
         flights.add(flight);
     }
 
-    public Set<Flight> getFlights() {
+    public void removeFlight(int index) {
+        flights.remove(index);
+    }
+
+    public List<Flight> getFlights() {
         return flights;
     }
 }

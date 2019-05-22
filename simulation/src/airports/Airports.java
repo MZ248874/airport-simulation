@@ -37,8 +37,7 @@ public class Airports {
             case POZNAN:
                 return poznan;
             default:
-                break;
+                throw new UnsupportedOperationException("No such airport");
         }
-        return null;
     }
 }

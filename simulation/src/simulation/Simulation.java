@@ -1,9 +1,13 @@
 package simulation;
 
+import airports.Airport;
 import airports.Airports;
+import airports.AirportsList;
+import flight.Flight;
 import planes.Plane;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -18,9 +22,10 @@ public class Simulation {
     }
 
     private final SimulationResources resources = SimulationResources.getInstance();
+    private final SimulationStatistics statistics = SimulationStatistics.getInstance();
     private final Airports airports = Airports.getInstance();
     private Set<Plane> planes = new HashSet<>();
-    private final int time = 7200;
+    private final int TIME = 7200;
 
     private void startSimulation(int planeQty) {
         Random random;
@@ -31,6 +36,7 @@ public class Simulation {
         int airlinesSize = resources.airlines.size();
         int airportsListSize = resources.airportsLists.size();
 
+        //Generowanie zadanej liczby samolotów i przypisywanie ich do losowych lotnisk
         for (int i = 0; i < planeQty; i++) {
             random = new Random();
             plane = planeBuilder
@@ -40,13 +46,41 @@ public class Simulation {
                     .build();
             planes.add(plane);
         }
+
+        //Liczba lotów zależy od liczby samolotów.
+        //W przypadku niespełenienia warunków lotu przez żaden ze stacjonujących samolotów pozostają 3 zapasowe loty.
+        int flightsAmount = (planeQty / resources.airportsLists.size()) + 3;
+        for (AirportsList airport : resources.airportsLists) {
+            Airport airport1 = Airports.getInstance().getAirport(airport);
+            for (int i = 0; i < flightsAmount; i++) {
+                airport1.addFlight(new Flight(airport));
+            }
+        }
     }
 
     public void simulate() {
+        for (Plane plane : planes) {
+            List<Flight> airportFlights = airports.getAirport(plane.getDeparture()).getFlights();
+            for (int i = airportFlights.size() - 1; i > -1; i--) {
+                if (plane.getPlaneModel().getMaxPassengers() > airportFlights.get(i).getPassengers()) {
+                    plane.fly(airportFlights.get(i));
+                    airports.getAirport(plane.getDeparture()).removeFlight(i);
+                    break;
+                }
+            }
+
+            //Obliczanie odległości między lotniskami
+            double distance = airports.getAirport(plane.getDeparture()).getLocation()
+                    .distance(airports.getAirport(plane.getArrival()).getLocation());
+            int time = (int) (distance * 0.75 * plane.getPlaneModel().getVelocity());
+            //TODO dokończyć: ratio, obliczanie lokalizacji, wątki
+
+        }
+        statistics.addDoneSimulation();
     }
 
     public int getTime() {
-        return time;
+        return TIME;
     }
 
     public Set<Plane> getPlanes() {

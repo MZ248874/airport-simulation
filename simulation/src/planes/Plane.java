@@ -3,6 +3,7 @@ package planes;
 import airports.Airports;
 import airports.AirportsList;
 import data_output.CSV;
+import flight.Flight;
 import location.Location;
 import planes.plane_models.PlaneModel;
 import planes.plane_models.PlaneModels;
@@ -34,10 +35,10 @@ public final class Plane implements CSV {
         this.isOperational = true;
     }
 
-    public void fly(AirportsList arrival, int passengers) {
+    public void fly(Flight flight) {
         planeState.inFlight(this);
-        setArrival(arrival);
-        setCurrentPassengers(passengers);
+        setArrival(flight.getDestination());
+        setCurrentPassengers(flight.getPassengers());
     }
 
     public void land() {

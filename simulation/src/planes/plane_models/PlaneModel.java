@@ -3,6 +3,7 @@ package planes.plane_models;
 public class PlaneModel {
     private final String make, modelName;
     private final int maxPassengers;
+    //Prędkość w m/s
     private final int velocity;
     private final int flightHeight;
 

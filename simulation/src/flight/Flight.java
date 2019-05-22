@@ -17,4 +17,12 @@ public class Flight {
         this.destination = destination;
         this.passengers = passengers;
     }
+
+    public AirportsList getDestination() {
+        return destination;
+    }
+
+    public int getPassengers() {
+        return passengers;
+    }
 }
