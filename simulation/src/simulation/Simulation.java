@@ -6,10 +6,7 @@ import airports.AirportsList;
 import flight.Flight;
 import planes.Plane;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Simulation {
     private static Simulation ourInstance = new Simulation();
@@ -23,8 +20,7 @@ public class Simulation {
 
     private final SimulationResources resources = SimulationResources.getInstance();
     private final SimulationStatistics statistics = SimulationStatistics.getInstance();
-    private final Airports airports = Airports.getInstance();
-    private Set<Plane> planes = new HashSet<>();
+    List<Plane> planes = new ArrayList<>();
     private final int TIME = 7200;
 
     private void startSimulation(int planeQty) {
@@ -59,23 +55,23 @@ public class Simulation {
     }
 
     public void simulate() {
-        for (Plane plane : planes) {
-            List<Flight> airportFlights = airports.getAirport(plane.getDeparture()).getFlights();
-            for (int i = airportFlights.size() - 1; i > -1; i--) {
-                if (plane.getPlaneModel().getMaxPassengers() > airportFlights.get(i).getPassengers()) {
-                    plane.fly(airportFlights.get(i));
-                    airports.getAirport(plane.getDeparture()).removeFlight(i);
-                    break;
-                }
+        //Ilość samolotów jako zmienna pomocnicza w celu obliczenia ilości potrzebnych wątków
+        int totalPlanes = planes.size();
+
+        //Jeśli liczba samolotów wynosi przynajmniej 4 tworzone są wątki
+
+        if (totalPlanes > 3) {
+            int i = 0;
+            int planesPerThread = totalPlanes % 4;
+            for (; i < planes.size() - 1; i += planesPerThread) {
+                SimulationThread simulationThread = new SimulationThread(i, i + planesPerThread);
+                simulationThread.start();
             }
-
-            //Obliczanie odległości między lotniskami
-            double distance = airports.getAirport(plane.getDeparture()).getLocation()
-                    .distance(airports.getAirport(plane.getArrival()).getLocation());
-            int time = (int) (distance * 0.75 * plane.getPlaneModel().getVelocity());
-            //TODO dokończyć: ratio, obliczanie lokalizacji, wątki
-
-        }
+            i -= planesPerThread;
+            SimulationThread simulationThread = new SimulationThread(i, planes.size() - 1);
+            simulationThread.start();
+        } else new SimulationThread(0, totalPlanes).start();
+        
         statistics.addDoneSimulation();
     }
 
@@ -83,7 +79,7 @@ public class Simulation {
         return TIME;
     }
 
-    public Set<Plane> getPlanes() {
+    public List<Plane> getPlanes() {
         return planes;
     }
 }
