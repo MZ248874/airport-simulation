@@ -1,11 +1,12 @@
 package simulation;
 
+import data_output.CSV;
 import planes.Plane;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class SimulationStatistics {
+public class SimulationStatistics implements CSV {
     private static SimulationStatistics ourInstance = new SimulationStatistics();
 
     public static SimulationStatistics getInstance() {
@@ -19,10 +20,19 @@ public class SimulationStatistics {
     private long totalPassengers = 0;
     private long totalFlights = 0;
     private long totalSimulations = 0;
-    private long timeElapsed = totalSimulations * Simulation.getInstance().getTime();
+    private long timeElapsed = totalSimulations * 7200;
     private Set<String> planesCrashed = new HashSet<>();
     private int totalCrashes = planesCrashed.size();
 
+    @Override
+    public String[] toCSV() {
+        return new String[]{
+                Long.toString(totalSimulations),
+                Long.toString(timeElapsed),
+                Long.toString(totalFlights),
+                Long.toString(totalPassengers),
+                Long.toString(totalCrashes)};
+    }
 
     public void addFlight() {
         totalFlights++;
@@ -58,5 +68,9 @@ public class SimulationStatistics {
 
     public Set getPlanesCrashedSet() {
         return planesCrashed;
+    }
+
+    public long getTimeElapsed() {
+        return timeElapsed;
     }
 }

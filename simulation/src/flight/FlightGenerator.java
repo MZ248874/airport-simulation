@@ -20,7 +20,7 @@ class FlightGenerator {
     }
 
     private final Airports airports = Airports.getInstance();
-    private List<AirportsList> airportsLists = SimulationResources.getInstance().airportsLists;
+    private List<AirportsList> airportsLists = List.copyOf(SimulationResources.getInstance().airportsLists);
 
     private class SortByImportance implements Comparator<AirportsList> {
         //Klasa implementuje interfejs Comparator i sortuje listę według wielkości współczynnika importance
@@ -45,7 +45,7 @@ class FlightGenerator {
         airportsListCopy.remove(airport);
 
         //Losuje od końca, aby współczynniki "importance" miały znaczenie procentowych szans
-        for (int i = airportsListCopy.size() - 1; i > 0; i--) {
+        for (int i = airportsListCopy.size() - 1; i > -1; i--) {
             //Jeśli lotnisko ma zbyt mały współczynnik "importance",
             // to sprawdzane jest kolejne o wyższym bądź równym współczynniku
             if (airports.getAirport(airportsListCopy.get(i)).getImportance() > randomImportance) {

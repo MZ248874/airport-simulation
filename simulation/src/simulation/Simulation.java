@@ -23,7 +23,7 @@ public class Simulation {
     List<Plane> planes = new ArrayList<>();
     private final int TIME = 7200;
 
-    private void startSimulation(int planeQty) {
+    public void startSimulation(int planeQty) {
         Random random;
         Plane plane;
         Plane.PlaneBuilder planeBuilder = new Plane.PlaneBuilder();
@@ -59,7 +59,6 @@ public class Simulation {
         int totalPlanes = planes.size();
 
         //Jeśli liczba samolotów wynosi przynajmniej 4 tworzone są wątki
-
         if (totalPlanes > 3) {
             int i = 0;
             int planesPerThread = totalPlanes % 4;
@@ -70,8 +69,8 @@ public class Simulation {
             i -= planesPerThread;
             SimulationThread simulationThread = new SimulationThread(i, planes.size() - 1);
             simulationThread.start();
-        } else new SimulationThread(0, totalPlanes).start();
-        
+        } else new SimulationThread(0, totalPlanes - 1).start();
+
         statistics.addDoneSimulation();
     }
 
