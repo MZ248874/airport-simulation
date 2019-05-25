@@ -71,6 +71,7 @@ public class Simulation {
             simulationThread.start();
         } else new SimulationThread(0, totalPlanes - 1).start();
 
+//        TODO: naprawić tworzenie wątków (NullPointerExceptions)
         statistics.addDoneSimulation();
     }
 

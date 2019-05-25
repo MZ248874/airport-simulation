@@ -17,9 +17,9 @@ public class UIHandler {
         new Intro();
     }
 
-    Data data = new Data();
+    private Data data = new Data();
 
-    public Data getData() {
+    Data getData() {
         return data;
     }
 
@@ -30,7 +30,7 @@ public class UIHandler {
         String fileName;
         Simulation simulation = Simulation.getInstance();
 
-        public int getPlanesNumber() {
+        int getPlanesNumber() {
             return planesNumber;
         }
 
@@ -46,7 +46,7 @@ public class UIHandler {
             return simulation;
         }
 
-        public void setPlanesNumber(int planesNumber) {
+        void setPlanesNumber(int planesNumber) {
             this.planesNumber = planesNumber;
         }
 

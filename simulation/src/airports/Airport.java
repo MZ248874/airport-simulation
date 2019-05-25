@@ -4,16 +4,16 @@ import data_output.CSV;
 import flight.Flight;
 import location.Location;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Vector;
 
 public final class Airport implements CSV {
     private String name;
     private Location location;
     private int importance;
     private long passengersServed, planesServed;
-    private List<Flight> flights;
+    private Vector<Flight> flights;
 
     public Airport(String name, Location location, int importance) {
         this.name = name;
@@ -23,7 +23,7 @@ public final class Airport implements CSV {
         planesServed = 0;
 
         //Automatycznie sortująca się lista
-        flights = new ArrayList<>() {
+        flights = new Vector<>() {
             @Override
             public boolean add(Flight flight) {
                 super.add(flight);
@@ -87,7 +87,7 @@ public final class Airport implements CSV {
         flights.remove(index);
     }
 
-    public List<Flight> getFlights() {
+    public Vector<Flight> getFlights() {
         return flights;
     }
 }

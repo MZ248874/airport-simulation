@@ -4,9 +4,7 @@ import airports.Airports;
 import airports.AirportsList;
 import simulation.SimulationResources;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 class FlightGenerator {
     private static FlightGenerator ourInstance = new FlightGenerator();
@@ -20,7 +18,7 @@ class FlightGenerator {
     }
 
     private final Airports airports = Airports.getInstance();
-    private List<AirportsList> airportsLists = List.copyOf(SimulationResources.getInstance().airportsLists);
+    private List<AirportsList> airportsLists = new ArrayList<>(Arrays.asList(AirportsList.values()));
 
     private class SortByImportance implements Comparator<AirportsList> {
         //Klasa implementuje interfejs Comparator i sortuje listę według wielkości współczynnika importance
@@ -35,12 +33,15 @@ class FlightGenerator {
         //Zmienna ilości pasażerów
         int randomPassengers;
 
+        //Największy samolot pomieści maksymalnie 853 osoby
+        randomPassengers = new Random().nextInt(853);
+
         //Losuje wartośc z przedziału od 0 do 99 (współczynnik procentowy)
         int randomImportance = new Random().nextInt(100);
 
         //Tworzy kopię listy lotnisk dla pojedynczego użycia
+//        List<AirportsList> airportsListCopy = airportsLists;
         List<AirportsList> airportsListCopy = airportsLists;
-
         //Usuwa lotnisko, na którym aktualnie znajduje się samolot
         airportsListCopy.remove(airport);
 
@@ -54,9 +55,7 @@ class FlightGenerator {
             }
         }
 
-        //Największy samolot pomieści maksymalnie 853 osoby
-        randomPassengers = new Random().nextInt(853);
-
+        System.out.println("Flight generated!");
         return new Flight(compliantAirport, randomPassengers);
     }
 

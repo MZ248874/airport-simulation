@@ -9,8 +9,8 @@ public class Flight {
 
     public Flight(AirportsList departure) {
         Flight flight = FlightGenerator.getInstance().generateFlight(departure);
-        this.destination = flight.destination;
-        this.passengers = flight.passengers;
+        this.destination = flight.getDestination();
+        this.passengers = flight.getPassengers();
     }
 
     Flight(AirportsList destination, int passengers) {

@@ -42,14 +42,20 @@ public class Menu extends JFrame {
         timeElapsed.setText("Time elapsed: " + simulationStatistics.getTimeElapsed() / 3600 + " hours");
     }
 
+    private void repaintValues() {
+        planes.repaint();
+        totalSims.repaint();
+        timeElapsed.repaint();
+    }
+
     private void addActionListeners() {
         simulateButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 progressBar1.setValue(100);
                 simulation.simulate();
+                repaintValues();
                 progressBar1.setValue(0);
-                mainWindow.repaint();
             }
 
             @Override

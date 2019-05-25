@@ -36,9 +36,9 @@ public final class Plane implements CSV {
     }
 
     public void fly(Flight flight) {
-        planeState.inFlight(this);
         setArrival(flight.getDestination());
         setCurrentPassengers(flight.getPassengers());
+        planeState.inFlight(this);
     }
 
     public void land() {
@@ -51,12 +51,11 @@ public final class Plane implements CSV {
 
 
     public String[] toCSV() {
-        String[] result = {ID, airline, planeModel.getMake(), planeModel.getModelName(),
+        return new String[]{ID, airline, planeModel.getMake(), planeModel.getModelName(),
                 Airports.getInstance().getAirport(departure).toString(),
                 Airports.getInstance().getAirport(arrival).toString(),
                 location.toString(),
                 Integer.toString(currentPassengers), Boolean.toString(isOperational)};
-        return result;
     }
 
     private String generateID() {
