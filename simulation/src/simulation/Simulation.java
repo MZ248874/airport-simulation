@@ -20,7 +20,7 @@ public class Simulation {
 
     private final SimulationResources resources = SimulationResources.getInstance();
     private final SimulationStatistics statistics = SimulationStatistics.getInstance();
-    List<Plane> planes = new ArrayList<>();
+    private Vector<Plane> planes = new Vector<>();
     private final int TIME = 7200;
 
     public void startSimulation(int planeQty) {
@@ -60,14 +60,19 @@ public class Simulation {
 
         //Jeśli liczba samolotów wynosi przynajmniej 4 tworzone są wątki
         if (totalPlanes > 3) {
+            int difference = 0;
+            while (totalPlanes % 4 != 0) {
+                totalPlanes--;
+                difference++;
+            }
+            int planesPerThread = totalPlanes / 4;
+
             int i = 0;
-            int planesPerThread = totalPlanes % 4;
             for (; i < planes.size() - 1; i += planesPerThread) {
                 SimulationThread simulationThread = new SimulationThread(i, i + planesPerThread);
                 simulationThread.start();
             }
-            i -= planesPerThread;
-            SimulationThread simulationThread = new SimulationThread(i, planes.size() - 1);
+            SimulationThread simulationThread = new SimulationThread(i, i + difference);
             simulationThread.start();
         } else new SimulationThread(0, totalPlanes - 1).start();
 
@@ -79,7 +84,7 @@ public class Simulation {
         return TIME;
     }
 
-    public List<Plane> getPlanes() {
+    public Vector<Plane> getPlanes() {
         return planes;
     }
 }

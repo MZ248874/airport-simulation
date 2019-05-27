@@ -20,7 +20,7 @@ public class SimulationStatistics implements CSV {
     private long totalPassengers = 0;
     private long totalFlights = 0;
     private long totalSimulations = 0;
-    private long timeElapsed = totalSimulations * 7200;
+    private long timeElapsed;
     private Set<String> planesCrashed = new HashSet<>();
     private int totalCrashes = planesCrashed.size();
 
@@ -60,6 +60,7 @@ public class SimulationStatistics implements CSV {
 
     public void addDoneSimulation() {
         totalSimulations++;
+        timeElapsed = totalSimulations * 7200;
     }
 
     public void addCrashedPlane(Plane plane) {

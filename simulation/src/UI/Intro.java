@@ -1,6 +1,9 @@
 package UI;
 
+import simulation.Simulation;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -12,9 +15,7 @@ public class Intro extends JFrame {
     private JLabel title;
 
     private UIHandler uiHandler = UIHandler.getInstance();
-
-    private void createUIComponents() {
-    }
+    private Simulation simulation = Simulation.getInstance();
 
     Intro() {
         setup();
@@ -37,6 +38,9 @@ public class Intro extends JFrame {
                     int planes;
                     planes = Integer.parseInt(planeNumberField.getText());
                     uiHandler.getData().setPlanesNumber(planes);
+                    intro.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    continueButton.setEnabled(false);
+                    simulation.startSimulation(uiHandler.getData().getPlanesNumber());
                     setVisible(false);
                     dispose();
                     new Menu();

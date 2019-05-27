@@ -51,11 +51,14 @@ public final class Plane implements CSV {
 
 
     public String[] toCSV() {
-        return new String[]{ID, airline, planeModel.getMake(), planeModel.getModelName(),
+        return new String[]{ID, airline,
+                planeModel.getMake(),
+                planeModel.getModelName(),
                 Airports.getInstance().getAirport(departure).toString(),
                 Airports.getInstance().getAirport(arrival).toString(),
                 location.toString(),
-                Integer.toString(currentPassengers), Boolean.toString(isOperational)};
+                Integer.toString(currentPassengers),
+                Boolean.toString(isOperational)};
     }
 
     private String generateID() {

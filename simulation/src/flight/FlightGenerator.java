@@ -55,7 +55,6 @@ class FlightGenerator {
             }
         }
 
-        System.out.println("Flight generated!");
         return new Flight(compliantAirport, randomPassengers);
     }
 

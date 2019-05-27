@@ -5,7 +5,6 @@ import flight.Flight;
 import location.Location;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Vector;
 
 public final class Airport implements CSV {
@@ -84,7 +83,11 @@ public final class Airport implements CSV {
     }
 
     public void removeFlight(int index) {
-        flights.remove(index);
+        try {
+            flights.remove(index);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return;
+        }
     }
 
     public Vector<Flight> getFlights() {
