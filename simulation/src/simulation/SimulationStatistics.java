@@ -27,11 +27,11 @@ public class SimulationStatistics implements CSV {
     @Override
     public String[] toCSV() {
         return new String[]{
-                Long.toString(totalSimulations),
-                Long.toString(timeElapsed),
-                Long.toString(totalFlights),
-                Long.toString(totalPassengers),
-                Long.toString(totalCrashes)};
+                Long.toString(getTotalSimulations()),
+                Long.toString(getTimeElapsed()),
+                Long.toString(getTotalFlights()),
+                Long.toString(getTotalPassengers()),
+                Long.toString(getTotalCrashes())};
     }
 
     public static void addFlight() {

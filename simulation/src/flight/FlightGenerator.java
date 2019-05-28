@@ -5,6 +5,7 @@ import airports.Airports;
 import airports.AirportsList;
 import simulation.SimulationResources;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -32,7 +33,7 @@ class FlightGenerator {
 
         //Tworzy kopię listy lotnisk dla pojedynczego użycia
 //        List<AirportsList> airportsListCopy = AIRPORTS_LIST;
-        List<Airport> airportsListCopy = List.copyOf(SimulationResources.airportsList);
+        List<Airport> airportsListCopy = new ArrayList<>(List.copyOf(SimulationResources.airportsList));
         //Usuwa lotnisko, na którym aktualnie znajduje się samolot
         airportsListCopy.remove(airport);
 

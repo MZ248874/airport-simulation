@@ -52,11 +52,14 @@ public final class Plane implements CSV {
 
 
     public String[] toCSV() {
+        String arrivalCopy;
+        if (arrival != null) arrivalCopy = arrival.toString();
+        else arrivalCopy = "";
         return new String[]{ID, airline,
                 planeModel.getMake(),
                 planeModel.getModelName(),
                 departure.toString(),
-                arrival.toString(),
+                arrivalCopy,
                 location.toString(),
                 Integer.toString(currentPassengers),
                 Boolean.toString(isOperational)};

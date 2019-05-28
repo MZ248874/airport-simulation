@@ -17,45 +17,23 @@ public class UIHandler {
         new Intro();
     }
 
-    private Data data = new Data();
+    private static Data data = new Data();
 
-    Data getData() {
+    static Data getData() {
         return data;
     }
 
-    class Data {
+    static class Data {
 
         int planesNumber;
-        String filePath;
-        String fileName;
-        Simulation simulation = Simulation.getInstance();
 
         int getPlanesNumber() {
             return planesNumber;
-        }
-
-        public String getFilePath() {
-            return filePath;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public Simulation getSimulation() {
-            return simulation;
         }
 
         void setPlanesNumber(int planesNumber) {
             this.planesNumber = planesNumber;
         }
 
-        public void setFilePath(String filePath) {
-            this.filePath = filePath;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
     }
 }

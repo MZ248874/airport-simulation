@@ -14,9 +14,6 @@ public class Intro extends JFrame {
     private JLabel description;
     private JLabel title;
 
-    private UIHandler uiHandler = UIHandler.getInstance();
-    private Simulation simulation = Simulation.getInstance();
-
     Intro() {
         setup();
         add(intro);
@@ -37,10 +34,15 @@ public class Intro extends JFrame {
                 try {
                     int planes;
                     planes = Integer.parseInt(planeNumberField.getText());
-                    uiHandler.getData().setPlanesNumber(planes);
+                    UIHandler.getData().setPlanesNumber(planes);
                     intro.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     continueButton.setEnabled(false);
-                    simulation.startSimulation(uiHandler.getData().getPlanesNumber());
+//                    try {
+                    Simulation.startSimulation(UIHandler.getData().getPlanesNumber());
+//                    }
+//                    catch (Exception exce){
+//                        new JOptionPane().showMessageDialog(intro, exce.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//                    }
                     setVisible(false);
                     dispose();
                     new Menu();

@@ -20,7 +20,7 @@ public class Simulation {
     private static Vector<Plane> planes = new Vector<>();
     private final int TIME = 7200;
 
-    public void startSimulation(int planeQty) {
+    public static void startSimulation(int planeQty) {
         Random random;
         Plane plane;
         Plane.PlaneBuilder planeBuilder = new Plane.PlaneBuilder();
@@ -50,7 +50,7 @@ public class Simulation {
         }
     }
 
-    public void simulate() {
+    public static void simulate() {
         //Ilość samolotów jako zmienna pomocnicza w celu obliczenia ilości potrzebnych wątków
         int totalPlanes = planes.size();
 
@@ -72,7 +72,6 @@ public class Simulation {
             simulationThread.start();
         } else new SimulationThread(0, totalPlanes - 1).start();
 
-//        TODO: naprawić tworzenie wątków (NullPointerExceptions)
         SimulationStatistics.addDoneSimulation();
     }
 
@@ -80,7 +79,7 @@ public class Simulation {
         return TIME;
     }
 
-    public Vector<Plane> getPlanes() {
+    public static Vector<Plane> getPlanes() {
         return planes;
     }
 }

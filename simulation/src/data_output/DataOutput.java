@@ -15,11 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataOutput {
-    private final Simulation simulation = Simulation.getInstance();
-    private final SimulationResources simulationResources = SimulationResources.getInstance();
-    private final Airports airports = Airports.getInstance();
+
     private String filePath;
-    private File CSVFile;
 
     public DataOutput(String filePath) {
         this.filePath = filePath;
@@ -28,7 +25,7 @@ public class DataOutput {
 
     private void CSV() {
         try {
-            CSVFile = new File(filePath);
+            File CSVFile = new File(filePath);
             FileWriter outputFile = new FileWriter(CSVFile);
             CSVWriter output = new CSVWriter(outputFile);
 
@@ -37,13 +34,25 @@ public class DataOutput {
             output.writeNext(header1);
             output.writeNext(spacing);
 
+
             String[] header2 = {"Simulation statistics"};
+            String[] description1 = {"Total simulations",
+                    "Total time [s]",
+                    "Total flights",
+                    "Total passengers",
+                    "Total crashes"};
             output.writeNext(header2);
+            output.writeNext(description1);
             output.writeNext(SimulationStatistics.getInstance().toCSV());
             output.writeNext(spacing);
 
             String[] header3 = {"Airports list"};
+            String[] description2 = {"Name",
+                    "Location",
+                    "Planes served",
+                    "Passengers served"};
             output.writeNext(header3);
+            output.writeNext(description2);
             output.writeNext(spacing);
 
             List<String[]> data = new ArrayList<>();
@@ -55,8 +64,18 @@ public class DataOutput {
             data.clear();
 
             String[] header4 = {"Planes list"};
+            String[] description3 = {"ID",
+                    "Airline",
+                    "Make",
+                    "Model",
+                    "Departure",
+                    "Arrival",
+                    "Location",
+                    "Current passengers",
+                    "Is operational"};
             output.writeNext(header4);
-            for (Plane plane : simulation.getPlanes()) {
+            output.writeNext(description3);
+            for (Plane plane : Simulation.getPlanes()) {
                 data.add(plane.toCSV());
             }
             output.writeAll(data);

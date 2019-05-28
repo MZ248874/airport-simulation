@@ -12,7 +12,6 @@ import java.awt.event.MouseListener;
 
 public class Menu extends JFrame {
     private JPanel mainWindow;
-    private JProgressBar progressBar1;
     private JButton finishButton;
     private JButton simulateButton;
     private JLabel totalSims;
@@ -21,11 +20,6 @@ public class Menu extends JFrame {
     private JLabel title;
     private JButton extractData;
     private JFileChooser saveFile;
-
-    private Simulation simulation = Simulation.getInstance();
-    private SimulationStatistics simulationStatistics = SimulationStatistics.getInstance();
-    private UIHandler uiHandler = UIHandler.getInstance();
-
 
     Menu() {
         setup();
@@ -42,18 +36,20 @@ public class Menu extends JFrame {
     }
 
     private void refreshText() {
-        planes.setText("Planes: " + uiHandler.getData().getPlanesNumber());
-        totalSims.setText("Total simulations: " + simulationStatistics.getTotalSimulations());
-        timeElapsed.setText("Time elapsed: " + simulationStatistics.getTimeElapsed() / 3600 + " hours");
+        planes.setText("Planes: " + UIHandler.getData().getPlanesNumber());
+        totalSims.setText("Total simulations: " + SimulationStatistics.getTotalSimulations());
+        timeElapsed.setText("Time elapsed: " + SimulationStatistics.getTimeElapsed() / 3600 + " hours");
     }
 
     private void addActionListeners() {
         simulateButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                simulation.simulate();
-                progressBar1.setValue(100);
-                progressBar1.setValue(0);
+                mainWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                simulateButton.setEnabled(false);
+                Simulation.simulate();
+                mainWindow.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                simulateButton.setEnabled(true);
                 refreshText();
             }
 
@@ -115,14 +111,14 @@ public class Menu extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 saveFile = new JFileChooser();
                 FileNameExtensionFilter csvFilter =
-                        new FileNameExtensionFilter("Spreadsheet", "csv", "ods", "xls", "xlsx");
+                        new FileNameExtensionFilter("Spreadsheet (.csv, .ods, .xls, .xlsx)", "csv", "ods", "xls", "xlsx");
                 saveFile.setFileFilter(csvFilter);
 
                 if (saveFile.showSaveDialog(mainWindow) == JFileChooser.APPROVE_OPTION) {
                     new DataOutput(saveFile.getSelectedFile().getPath() + ".csv");
                     if (Desktop.isDesktopSupported()) {
                         try {
-                            Desktop.getDesktop().edit(saveFile.getSelectedFile());
+                            Desktop.getDesktop().open(saveFile.getSelectedFile());
                         } catch (Exception ex) {
                             return;
                         }

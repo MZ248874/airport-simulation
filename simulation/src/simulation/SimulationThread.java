@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class SimulationThread extends Thread {
 
-    private Vector<Plane> planes = Simulation.getInstance().getPlanes();
+    private Vector<Plane> planes = Simulation.getPlanes();
     private final int TIME = 7200;
 
     private int index;
@@ -38,11 +38,12 @@ public class SimulationThread extends Thread {
                     plane.crash();
                     break;
                 }
+
                 //TODO: wszystko poniżej
                 //Obliczanie odległości między lotniskami
-//                double distance = airports.getAirport(plane.getDeparture()).getLocation()
-//                        .distance(airports.getAirport(plane.getArrival()).getLocation());
-                double distance = 1400;
+                double distance = plane.getDeparture().getLocation()
+                        .distance(plane.getArrival().getLocation());
+//                double distance = 1400;
                 //Obliczanie czasu lotu. Prędkość samolotu pomnożona przez 75%, aby wziąć pod uwagę czas startu i lądowania
                 int flightTime = (int) (distance * 0.75 * plane.getPlaneModel().getVelocity());
 
@@ -55,15 +56,20 @@ public class SimulationThread extends Thread {
     private void chooseFlight(Plane plane) {
         Airport departure = plane.getDeparture();
         Vector<Flight> airportFlights = departure.getFlights();
-        for (int i = airportFlights.size() - 1; i > -1; i--) {
-            //Wybór odpowiedniego lotu na podstawie dostępnej liczby miejsc dla pasażerów
-            if (plane.getPlaneModel().getMaxPassengers() >= airportFlights.get(i).getPassengers()) {
+        int maxPlanePassengers = plane.getPlaneModel().getMaxPassengers();
+        synchronized (this) {
+            for (int i = airportFlights.size() - 1; i > -1; i--) {
+                //Wybór odpowiedniego lotu na podstawie dostępnej liczby miejsc dla pasażerów
+                Flight flight = airportFlights.get(i);
+                airportFlights.remove(flight);
+                if (maxPlanePassengers >= flight.getPassengers()) {
 
-                plane.fly(airportFlights.get(i));
-                departure.removeFlight(i);
-                departure.addFlight(new Flight(departure));
+                    plane.fly(flight);
+                    departure.addFlight(new Flight(departure));
 
-                break;
+                    break;
+                }
+                airportFlights.add(flight);
             }
         }
     }

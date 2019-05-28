@@ -24,16 +24,18 @@ public class SimulationResources {
 
     public static final List<PlaneModels> planeModels = Arrays.asList(PlaneModels.values());
     public static final List<String> airlines = Arrays.asList("Ryanair", "WizzAir", "LOT", "Lufthansa", "KLM");
-    public static final List<AirportsList> AIRPORTS_LIST = Arrays.asList(AirportsList.values());
-    public static final List<Airport> airportsList = new ArrayList<>();
+    public static List<AirportsList> AIRPORTS_LIST;
+    public static List<Airport> airportsList;
 
     private void setupAirportsList() {
-        AIRPORTS_LIST.forEach(airportE -> airportsList.add(Airports.getAirport(airportE)));
+        AIRPORTS_LIST = Arrays.asList(AirportsList.values());
+        airportsList = new ArrayList<>();
+        AIRPORTS_LIST.forEach(airportsList1 -> airportsList.add(Airports.getAirport(airportsList1)));
         airportsList.sort(new SortByImportance());
     }
 
     private class SortByImportance implements Comparator<Airport> {
-        //Klasa implementuje interfejs Comparator i sortuje listę według wielkości współczynnika importance
+        //Klasa implementuje interfejs Comparator i sortuje listę według wielkości współczynnika "importance"
         public int compare(Airport airport1, Airport airport2) {
             return airport1.getImportance() - airport2.getImportance();
         }
