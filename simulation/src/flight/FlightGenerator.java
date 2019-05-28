@@ -1,10 +1,12 @@
 package flight;
 
+import airports.Airport;
 import airports.Airports;
 import airports.AirportsList;
 import simulation.SimulationResources;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 class FlightGenerator {
     private static FlightGenerator ourInstance = new FlightGenerator();
@@ -14,22 +16,11 @@ class FlightGenerator {
     }
 
     private FlightGenerator() {
-        airportsLists.sort(new SortByImportance());
     }
 
-    private final Airports airports = Airports.getInstance();
-    private List<AirportsList> airportsLists = new ArrayList<>(Arrays.asList(AirportsList.values()));
-
-    private class SortByImportance implements Comparator<AirportsList> {
-        //Klasa implementuje interfejs Comparator i sortuje listę według wielkości współczynnika importance
-        public int compare(AirportsList airport1, AirportsList airport2) {
-            return airports.getAirport(airport1).getImportance() - airports.getAirport(airport2).getImportance();
-        }
-    }
-
-    Flight generateFlight(AirportsList airport) {
+    static Flight generateFlight(Airport airport) {
         //Zmienna lotniska docelowego
-        AirportsList compliantAirport = AirportsList.BERLIN;
+        Airport compliantAirport = Airports.getAirport(AirportsList.BERLIN);
         //Zmienna ilości pasażerów
         int randomPassengers;
 
@@ -40,8 +31,8 @@ class FlightGenerator {
         int randomImportance = new Random().nextInt(100);
 
         //Tworzy kopię listy lotnisk dla pojedynczego użycia
-//        List<AirportsList> airportsListCopy = airportsLists;
-        List<AirportsList> airportsListCopy = airportsLists;
+//        List<AirportsList> airportsListCopy = AIRPORTS_LIST;
+        List<Airport> airportsListCopy = List.copyOf(SimulationResources.airportsList);
         //Usuwa lotnisko, na którym aktualnie znajduje się samolot
         airportsListCopy.remove(airport);
 
@@ -49,7 +40,7 @@ class FlightGenerator {
         for (int i = airportsListCopy.size() - 1; i > -1; i--) {
             //Jeśli lotnisko ma zbyt mały współczynnik "importance",
             // to sprawdzane jest kolejne o wyższym bądź równym współczynniku
-            if (airports.getAirport(airportsListCopy.get(i)).getImportance() > randomImportance) {
+            if (airportsListCopy.get(i).getImportance() > randomImportance) {
                 compliantAirport = airportsListCopy.get(i);
                 break;
             }

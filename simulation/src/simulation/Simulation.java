@@ -1,12 +1,11 @@
 package simulation;
 
 import airports.Airport;
-import airports.Airports;
-import airports.AirportsList;
 import flight.Flight;
 import planes.Plane;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Vector;
 
 public class Simulation {
     private static Simulation ourInstance = new Simulation();
@@ -18,9 +17,7 @@ public class Simulation {
     private Simulation() {
     }
 
-    private final SimulationResources resources = SimulationResources.getInstance();
-    private final SimulationStatistics statistics = SimulationStatistics.getInstance();
-    private Vector<Plane> planes = new Vector<>();
+    private static Vector<Plane> planes = new Vector<>();
     private final int TIME = 7200;
 
     public void startSimulation(int planeQty) {
@@ -28,28 +25,27 @@ public class Simulation {
         Plane plane;
         Plane.PlaneBuilder planeBuilder = new Plane.PlaneBuilder();
 
-        int planeModelsSize = resources.planeModels.size();
-        int airlinesSize = resources.airlines.size();
-        int airportsListSize = resources.airportsLists.size();
+        int planeModelsSize = SimulationResources.planeModels.size();
+        int airlinesSize = SimulationResources.airlines.size();
+        int airportsListSize = SimulationResources.AIRPORTS_LIST.size();
 
         //Generowanie zadanej liczby samolotów i przypisywanie ich do losowych lotnisk
         for (int i = 0; i < planeQty; i++) {
             random = new Random();
             plane = planeBuilder
-                    .buildPlaneModel(resources.planeModels.get(random.nextInt(planeModelsSize)))
-                    .buildAirline(resources.airlines.get(random.nextInt(airlinesSize)))
-                    .buildDeparture(resources.airportsLists.get(random.nextInt(airportsListSize)))
+                    .buildPlaneModel(SimulationResources.planeModels.get(random.nextInt(planeModelsSize)))
+                    .buildAirline(SimulationResources.airlines.get(random.nextInt(airlinesSize)))
+                    .buildDeparture(SimulationResources.AIRPORTS_LIST.get(random.nextInt(airportsListSize)))
                     .build();
             planes.add(plane);
         }
 
         //Liczba lotów zależy od liczby samolotów.
         //W przypadku niespełenienia warunków lotu przez żaden ze stacjonujących samolotów pozostają 3 zapasowe loty.
-        int flightsAmount = (planeQty / resources.airportsLists.size()) + 3;
-        for (AirportsList airport : resources.airportsLists) {
-            Airport airport1 = Airports.getInstance().getAirport(airport);
+        int flightsAmount = (planeQty / SimulationResources.AIRPORTS_LIST.size()) + 3;
+        for (Airport airport : SimulationResources.airportsList) {
             for (int i = 0; i < flightsAmount; i++) {
-                airport1.addFlight(new Flight(airport));
+                airport.addFlight(new Flight(airport));
             }
         }
     }
@@ -77,7 +73,7 @@ public class Simulation {
         } else new SimulationThread(0, totalPlanes - 1).start();
 
 //        TODO: naprawić tworzenie wątków (NullPointerExceptions)
-        statistics.addDoneSimulation();
+        SimulationStatistics.addDoneSimulation();
     }
 
     public int getTime() {

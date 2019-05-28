@@ -1,5 +1,6 @@
 package planes;
 
+import airports.Airport;
 import airports.Airports;
 import airports.AirportsList;
 import data_output.CSV;
@@ -20,8 +21,8 @@ public final class Plane implements CSV {
     private int currentPassengers;
     private Location location;
     private PlaneState planeState;
-    private AirportsList departure;
-    private AirportsList arrival;
+    private Airport departure;
+    private Airport arrival;
     private boolean isOperational;
 
     private Plane(PlaneBuilder planeBuilder) {
@@ -29,7 +30,7 @@ public final class Plane implements CSV {
         this.ID = (planeBuilder.airline.substring(0, 3) + generateID()).toUpperCase();
         this.planeModel = planeBuilder.planeModel;
         this.departure = planeBuilder.departure;
-        this.location = Airports.getInstance().getAirport(departure).getLocation();
+        this.location = planeBuilder.departure.getLocation();
         this.currentPassengers = 0;
         this.planeState = PlaneOnGroundState.getInstance();
         this.isOperational = true;
@@ -54,8 +55,8 @@ public final class Plane implements CSV {
         return new String[]{ID, airline,
                 planeModel.getMake(),
                 planeModel.getModelName(),
-                Airports.getInstance().getAirport(departure).toString(),
-                Airports.getInstance().getAirport(arrival).toString(),
+                departure.toString(),
+                arrival.toString(),
                 location.toString(),
                 Integer.toString(currentPassengers),
                 Boolean.toString(isOperational)};
@@ -109,27 +110,27 @@ public final class Plane implements CSV {
         this.location = location;
     }
 
-    public void setDeparture(AirportsList departure) {
+    public void setDeparture(Airport departure) {
         this.departure = departure;
     }
 
-    public void setArrival(AirportsList arrival) {
+    public void setArrival(Airport arrival) {
         this.arrival = arrival;
     }
 
-    public AirportsList getDeparture() {
+    public Airport getDeparture() {
         return departure;
     }
 
-    public AirportsList getArrival() {
+    public Airport getArrival() {
         return arrival;
     }
 
 
     public static class PlaneBuilder {
-        String airline, ID;
+        String airline;
         PlaneModel planeModel;
-        AirportsList departure;
+        Airport departure;
 
         public PlaneBuilder buildAirline(String airline) {
             this.airline = airline;
@@ -142,7 +143,7 @@ public final class Plane implements CSV {
         }
 
         public PlaneBuilder buildDeparture(AirportsList airport) {
-            this.departure = airport;
+            this.departure = Airports.getAirport(airport);
             return this;
         }
 

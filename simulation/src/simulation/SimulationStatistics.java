@@ -17,12 +17,12 @@ public class SimulationStatistics implements CSV {
     }
 
     //Statystyki
-    private long totalPassengers = 0;
-    private long totalFlights = 0;
-    private long totalSimulations = 0;
-    private long timeElapsed;
-    private Set<String> planesCrashed = new HashSet<>();
-    private int totalCrashes = planesCrashed.size();
+    private static long totalPassengers = 0;
+    private static long totalFlights = 0;
+    private static long totalSimulations = 0;
+    private static long timeElapsed;
+    private static Set<String> planesCrashed = new HashSet<>();
+    private static int totalCrashes = planesCrashed.size();
 
     @Override
     public String[] toCSV() {
@@ -34,44 +34,44 @@ public class SimulationStatistics implements CSV {
                 Long.toString(totalCrashes)};
     }
 
-    public void addFlight() {
+    public static void addFlight() {
         totalFlights++;
     }
 
-    public void addTotalPassengers(int passengers) {
-        this.totalPassengers += passengers;
+    public static void addTotalPassengers(int passengers) {
+        totalPassengers += passengers;
     }
 
-    public long getTotalPassengers() {
+    public static long getTotalPassengers() {
         return totalPassengers;
     }
 
-    public long getTotalFlights() {
+    public static long getTotalFlights() {
         return totalFlights;
     }
 
-    public long getTotalCrashes() {
+    public static long getTotalCrashes() {
         return totalCrashes;
     }
 
-    public long getTotalSimulations() {
+    public static long getTotalSimulations() {
         return totalSimulations;
     }
 
-    public void addDoneSimulation() {
+    public static void addDoneSimulation() {
         totalSimulations++;
         timeElapsed = totalSimulations * 7200;
     }
 
-    public void addCrashedPlane(Plane plane) {
+    public static void addCrashedPlane(Plane plane) {
         planesCrashed.add(plane.getID());
     }
 
-    public Set getPlanesCrashedSet() {
+    public static Set getPlanesCrashedSet() {
         return planesCrashed;
     }
 
-    public long getTimeElapsed() {
+    public static long getTimeElapsed() {
         return timeElapsed;
     }
 }

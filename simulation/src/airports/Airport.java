@@ -34,10 +34,9 @@ public final class Airport implements CSV {
 
     //Sortowanie dostępnych lotów według współczynnika "importance" lotniska docelowego
     private class sortByImportance implements Comparator<Flight> {
-        Airports airports = Airports.getInstance();
 
         public int compare(Flight flight1, Flight flight2) {
-            return airports.getAirport(flight1.getDestination()).getImportance() - airports.getAirport(flight2.getDestination()).getImportance();
+            return flight1.getDestination().getImportance() - flight2.getDestination().getImportance();
         }
     }
 

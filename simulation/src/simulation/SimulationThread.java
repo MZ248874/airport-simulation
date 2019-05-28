@@ -1,7 +1,6 @@
 package simulation;
 
-import airports.Airports;
-import airports.AirportsList;
+import airports.Airport;
 import flight.Flight;
 import planes.Plane;
 
@@ -9,7 +8,7 @@ import java.util.Random;
 import java.util.Vector;
 
 public class SimulationThread extends Thread {
-    private final Airports airports = Airports.getInstance();
+
     private Vector<Plane> planes = Simulation.getInstance().getPlanes();
     private final int TIME = 7200;
 
@@ -54,15 +53,15 @@ public class SimulationThread extends Thread {
     }
 
     private void chooseFlight(Plane plane) {
-        AirportsList departure = plane.getDeparture();
-        Vector<Flight> airportFlights = airports.getAirport(plane.getDeparture()).getFlights();
+        Airport departure = plane.getDeparture();
+        Vector<Flight> airportFlights = departure.getFlights();
         for (int i = airportFlights.size() - 1; i > -1; i--) {
             //Wybór odpowiedniego lotu na podstawie dostępnej liczby miejsc dla pasażerów
             if (plane.getPlaneModel().getMaxPassengers() >= airportFlights.get(i).getPassengers()) {
 
                 plane.fly(airportFlights.get(i));
-                airports.getAirport(departure).removeFlight(i);
-                airports.getAirport(departure).addFlight(new Flight(departure));
+                departure.removeFlight(i);
+                departure.addFlight(new Flight(departure));
 
                 break;
             }

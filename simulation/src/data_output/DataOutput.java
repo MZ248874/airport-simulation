@@ -47,8 +47,8 @@ public class DataOutput {
             output.writeNext(spacing);
 
             List<String[]> data = new ArrayList<>();
-            for (AirportsList airport : simulationResources.airportsLists) {
-                data.add(airports.getAirport(airport).toCSV());
+            for (AirportsList airport : SimulationResources.AIRPORTS_LIST) {
+                data.add(Airports.getAirport(airport).toCSV());
             }
             output.writeAll(data);
             output.writeNext(spacing);

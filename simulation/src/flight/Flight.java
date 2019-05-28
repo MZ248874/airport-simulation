@@ -1,24 +1,24 @@
 package flight;
 
-import airports.AirportsList;
+import airports.Airport;
 
 public class Flight {
 
-    private final AirportsList destination;
+    private final Airport destination;
     private final int passengers;
 
-    public Flight(AirportsList departure) {
-        Flight flight = FlightGenerator.getInstance().generateFlight(departure);
+    public Flight(Airport departure) {
+        Flight flight = FlightGenerator.generateFlight(departure);
         this.destination = flight.getDestination();
         this.passengers = flight.getPassengers();
     }
 
-    Flight(AirportsList destination, int passengers) {
+    Flight(Airport destination, int passengers) {
         this.destination = destination;
         this.passengers = passengers;
     }
 
-    public AirportsList getDestination() {
+    public Airport getDestination() {
         return destination;
     }
 

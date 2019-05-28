@@ -12,15 +12,15 @@ public class Airports {
     private Airports() {
     }
 
-    private final Airport warsaw = new Airport("Warsaw Chopin Airport", new Location(123, 231, 123), 50);
-    private final Airport berlin = new Airport("Berlin International Airport", new Location(321, 5423, 754), 100);
-    private final Airport wroclaw = new Airport("Copernicus Airport Wroclaw", new Location(-165000, 123, -90000), 20);
-    private final Airport lodz = new Airport("Łódź Airport", new Location(0, 185, 0), 15);
-    private final Airport gdansk = new Airport("Gdansk Lech Walesa Airport", new Location(-60000, 148, 285000), 25);
-    private final Airport krakow = new Airport("Krakow John Paul II Airport", new Location(60000, 241, -195000), 30);
-    private final Airport poznan = new Airport("Poznań Airport", new Location(-50000, 150, 0), 10);
+    private static final Airport warsaw = new Airport("Warsaw Chopin Airport", new Location(123, 231, 123), 50);
+    private static final Airport berlin = new Airport("Berlin International Airport", new Location(321, 5423, 754), 100);
+    private static final Airport wroclaw = new Airport("Copernicus Airport Wroclaw", new Location(-165000, 123, -90000), 20);
+    private static final Airport lodz = new Airport("Łódź Airport", new Location(0, 185, 0), 15);
+    private static final Airport gdansk = new Airport("Gdansk Lech Walesa Airport", new Location(-60000, 148, 285000), 25);
+    private static final Airport krakow = new Airport("Krakow John Paul II Airport", new Location(60000, 241, -195000), 30);
+    private static final Airport poznan = new Airport("Poznań Airport", new Location(-50000, 150, 0), 10);
 
-    public Airport getAirport(AirportsList airport) {
+    public static Airport getAirport(AirportsList airport) {
         switch (airport) {
             case WARSAW:
                 return warsaw;
