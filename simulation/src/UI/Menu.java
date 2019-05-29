@@ -9,6 +9,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 
 public class Menu extends JFrame {
     private JPanel mainWindow;
@@ -116,11 +118,19 @@ public class Menu extends JFrame {
 
                 if (saveFile.showSaveDialog(mainWindow) == JFileChooser.APPROVE_OPTION) {
                     new DataOutput(saveFile.getSelectedFile().getPath() + ".csv");
+
                     if (Desktop.isDesktopSupported()) {
-                        try {
-                            Desktop.getDesktop().open(saveFile.getSelectedFile());
-                        } catch (Exception ex) {
-                            return;
+                        int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
+                                "Would You like to open your file?",
+                                "Results",
+                                dialogButton);
+                        if (dialogResult == JOptionPane.YES_OPTION) {
+                            try {
+                                Desktop.getDesktop().open(new File(saveFile.getSelectedFile() + ".csv"));
+                            } catch (IOException ex) {
+                                return;
+                            }
                         }
                     }
                 }
