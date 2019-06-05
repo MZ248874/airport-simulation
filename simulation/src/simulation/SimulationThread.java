@@ -28,28 +28,31 @@ public class SimulationThread extends Thread {
 
     private void handlePlane(Plane plane) {
         if (plane.isOperational()) {
-            int timeLeft = 0;
-            while (timeLeft < TIME) {
+            int time = TIME;
+            int timeLeft = plane.getTimeToLand();
+            if (timeLeft > time) {
+                timeLeft -= time;
+                plane.setTimeToLand(timeLeft);
+                return;
+            }
+            if (timeLeft != 0) {
+                time -= timeLeft;
+                plane.land();
+            } else while (timeLeft < time) {
                 chooseFlight(plane);
 
                 //Samolot ma 1% szans na wypadek w trakcie lotu
-                int crash = 50;
-                if (new Random().nextInt(100) == crash) {
+                if (new Random().nextInt(100) == 50) {
                     plane.crash();
                     break;
                 }
 
-                //TODO: wszystko poniżej
-                //Obliczanie odległości między lotniskami
-                double distance = plane.getDeparture().getLocation()
-                        .distance(plane.getArrival().getLocation());
-//                double distance = 1400;
-                //Obliczanie czasu lotu. Prędkość samolotu pomnożona przez 75%, aby wziąć pod uwagę czas startu i lądowania
-                int flightTime = (int) (distance * 0.75 * plane.getPlaneModel().getVelocity());
-
-                timeLeft += flightTime;
-                plane.land();
+                timeLeft += flightTime(plane);
+                if (timeLeft < time) plane.land();
             }
+            plane.setTimeToLand(timeLeft - time);
+            int ratio = plane.getTimeToLand() / flightTime(plane);
+            plane.getLocation().translate(plane.getArrival().getLocation(), ratio);
         }
     }
 
@@ -57,20 +60,29 @@ public class SimulationThread extends Thread {
         Airport departure = plane.getDeparture();
         Vector<Flight> airportFlights = departure.getFlights();
         int maxPlanePassengers = plane.getPlaneModel().getMaxPassengers();
-        synchronized (this) {
-            for (int i = airportFlights.size() - 1; i > -1; i--) {
-                //Wybór odpowiedniego lotu na podstawie dostępnej liczby miejsc dla pasażerów
-                Flight flight = airportFlights.get(i);
-                airportFlights.remove(flight);
-                if (maxPlanePassengers >= flight.getPassengers()) {
-
-                    plane.fly(flight);
-                    departure.addFlight(new Flight(departure));
-
-                    break;
-                }
-                airportFlights.add(flight);
+        for (int i = airportFlights.size() - 1; i > -1; i--) {
+            //Wybór odpowiedniego lotu na podstawie dostępnej liczby miejsc dla pasażerów
+            Flight flight = airportFlights.get(i);
+            if (maxPlanePassengers >= flight.getPassengers()) {
+                plane.fly(flight);
+                departure.removeFlight(flight);
+                departure.addFlight(new Flight(departure));
+                break;
             }
         }
+        if (plane.getArrival() == null) {
+            plane.fly(new Flight(maxPlanePassengers));
+        }
+    }
+
+    private int flightTime(Plane plane) {
+        //Obliczanie czasu lotu. Prędkość samolotu pomnożona przez 75%, aby wziąć pod uwagę czas startu i lądowania
+        return (int) (distance(plane) * 0.75 * plane.getPlaneModel().getVelocity());
+    }
+
+    private double distance(Plane plane) {
+        //Obliczanie odległości między lotniskami
+        return plane.getDeparture().getLocation()
+                .distance(plane.getArrival().getLocation());
     }
 }

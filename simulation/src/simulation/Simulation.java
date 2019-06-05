@@ -54,7 +54,7 @@ public class Simulation {
         //Ilość samolotów jako zmienna pomocnicza w celu obliczenia ilości potrzebnych wątków
         int totalPlanes = planes.size();
 
-        //Jeśli liczba samolotów wynosi przynajmniej 4 tworzone są wątki
+        /*//Jeśli liczba samolotów wynosi przynajmniej 4 tworzone są wątki
         if (totalPlanes > 3) {
             int difference = 0;
             while (totalPlanes % 4 != 0) {
@@ -70,7 +70,9 @@ public class Simulation {
             }
             SimulationThread simulationThread = new SimulationThread(i, i + difference);
             simulationThread.start();
-        } else new SimulationThread(0, totalPlanes - 1).start();
+        } else new SimulationThread(0, totalPlanes - 1).start();*/
+
+        new SimulationThread(0, totalPlanes).run();
 
         SimulationStatistics.addDoneSimulation();
     }

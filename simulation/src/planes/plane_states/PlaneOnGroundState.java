@@ -14,16 +14,14 @@ public class PlaneOnGroundState implements PlaneState {
     private PlaneOnGroundState() {
     }
 
-    private final SimulationStatistics simulationStatistics = SimulationStatistics.getInstance();
-
     @Override
     public void onGround(Plane plane) {
     }
 
     @Override
     public void inFlight(Plane plane) {
-        plane.setPlaneState(PlaneInFlightState.getInstance());
         plane.getLocation().setY(plane.getPlaneModel().getFlightHeight());
+        plane.setPlaneState(PlaneInFlightState.getInstance());
     }
 
     @Override
@@ -31,7 +29,7 @@ public class PlaneOnGroundState implements PlaneState {
         plane.setLocation(new Location(0, 0, 0));
         plane.setCurrentPassengers(0);
         plane.setOperational(false);
-        simulationStatistics.addCrashedPlane(plane);
+        SimulationStatistics.addCrashedPlane(plane);
         plane.setPlaneState(PlaneCrashedState.getInstance());
     }
 

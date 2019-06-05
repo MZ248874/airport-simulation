@@ -41,7 +41,6 @@ public final class Airport implements CSV {
     }
 
     public String[] toCSV() {
-        //TODO
         return new String[]{name, location.toString(), Long.toString(planesServed), Long.toString(passengersServed)};
     }
 
@@ -84,6 +83,10 @@ public final class Airport implements CSV {
 
     public void removeFlight(int index) {
             flights.remove(index);
+    }
+
+    public void removeFlight(Flight flight) {
+        flights.remove(flight);
     }
 
     public synchronized Vector<Flight> getFlights() {

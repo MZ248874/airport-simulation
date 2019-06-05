@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
 
 public class Menu extends JFrame {
     private JPanel mainWindow;
@@ -23,6 +22,8 @@ public class Menu extends JFrame {
     private JButton extractData;
     private JFileChooser saveFile;
 
+    boolean resultsSavedFlag;
+
     Menu() {
         setup();
         addActionListeners();
@@ -32,7 +33,7 @@ public class Menu extends JFrame {
 
     private void setup() {
         setVisible(true);
-        setSize(200, 600);
+        setSize(250, 600);
         refreshText();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -53,6 +54,7 @@ public class Menu extends JFrame {
                 mainWindow.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 simulateButton.setEnabled(true);
                 refreshText();
+                resultsSavedFlag = false;
             }
 
             @Override
@@ -79,12 +81,22 @@ public class Menu extends JFrame {
         finishButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
-                        "Do you really want to close the program?",
-                        "Warning",
-                        dialogButton);
-                if (dialogResult == JOptionPane.YES_OPTION) System.exit(0);
+                if (resultsSavedFlag) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
+                            "Do you really want to close the program?",
+                            "Warning",
+                            dialogButton);
+                    if (dialogResult == JOptionPane.YES_OPTION) System.exit(0);
+                } else {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
+                            "You haven't saved your results!\n Would you like to do it now?",
+                            "Warning",
+                            dialogButton);
+                    if (dialogResult == JOptionPane.YES_OPTION) saveDialog();
+                    else System.exit(0);
+                }
             }
 
             @Override
@@ -111,29 +123,7 @@ public class Menu extends JFrame {
         extractData.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                saveFile = new JFileChooser();
-                FileNameExtensionFilter csvFilter =
-                        new FileNameExtensionFilter("Spreadsheet (.csv, .ods, .xls, .xlsx)", "csv", "ods", "xls", "xlsx");
-                saveFile.setFileFilter(csvFilter);
-
-                if (saveFile.showSaveDialog(mainWindow) == JFileChooser.APPROVE_OPTION) {
-                    new DataOutput(saveFile.getSelectedFile().getPath() + ".csv");
-
-                    if (Desktop.isDesktopSupported()) {
-                        int dialogButton = JOptionPane.YES_NO_OPTION;
-                        int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
-                                "Would You like to open your file?",
-                                "Results",
-                                dialogButton);
-                        if (dialogResult == JOptionPane.YES_OPTION) {
-                            try {
-                                Desktop.getDesktop().open(new File(saveFile.getSelectedFile() + ".csv"));
-                            } catch (IOException ex) {
-                                return;
-                            }
-                        }
-                    }
-                }
+                saveDialog();
             }
 
             @Override
@@ -156,5 +146,32 @@ public class Menu extends JFrame {
 
             }
         });
+    }
+
+    private void saveDialog() {
+        saveFile = new JFileChooser();
+        FileNameExtensionFilter csvFilter =
+                new FileNameExtensionFilter("Spreadsheet (.csv, .ods, .xls, .xlsx)", "csv", "ods", "xls", "xlsx");
+        saveFile.setFileFilter(csvFilter);
+
+        if (saveFile.showSaveDialog(mainWindow) == JFileChooser.APPROVE_OPTION) {
+            new DataOutput(saveFile.getSelectedFile().getPath() + ".csv");
+            resultsSavedFlag = true;
+
+            if (Desktop.isDesktopSupported()) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
+                        "Would You like to open your file?",
+                        "Results",
+                        dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    try {
+                        Desktop.getDesktop().open(new File(saveFile.getSelectedFile() + ".csv"));
+                    } catch (Exception ex) {
+                        new JOptionPane().showMessageDialog(mainWindow, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }
     }
 }

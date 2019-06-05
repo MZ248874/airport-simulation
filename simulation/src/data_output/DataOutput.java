@@ -71,6 +71,7 @@ public class DataOutput {
                     "Departure",
                     "Arrival",
                     "Location",
+                    "Time to land",
                     "Current passengers",
                     "Is operational"};
             output.writeNext(header4);

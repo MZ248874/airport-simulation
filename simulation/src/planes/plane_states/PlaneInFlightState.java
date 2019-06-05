@@ -17,6 +17,9 @@ public class PlaneInFlightState implements PlaneState {
     @Override
     public void onGround(Plane plane) {
         plane.setDeparture(plane.getArrival());
+        plane.getArrival().addPlanesServed();
+        plane.getArrival().addPassengersServed(plane.getCurrentPassengers());
+        plane.setTimeToLand(0);
         SimulationStatistics.addFlight();
         SimulationStatistics.addTotalPassengers(plane.getCurrentPassengers());
         plane.setPlaneState(PlaneOnGroundState.getInstance());

@@ -1,6 +1,8 @@
 package flight;
 
 import airports.Airport;
+import airports.Airports;
+import airports.AirportsList;
 
 public class Flight {
 
@@ -11,6 +13,11 @@ public class Flight {
         Flight flight = FlightGenerator.generateFlight(departure);
         this.destination = flight.getDestination();
         this.passengers = flight.getPassengers();
+    }
+
+    public Flight(int passengers) {
+        this.destination = Airports.getAirport(AirportsList.BERLIN);
+        this.passengers = passengers;
     }
 
     Flight(Airport destination, int passengers) {
