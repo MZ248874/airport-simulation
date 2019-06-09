@@ -24,6 +24,7 @@ public class SimulationThread extends Thread {
         for (; index < endIndex; index++) {
             handlePlane(planes.get(index));
         }
+        SimulationStatistics.addDoneSimulation();
     }
 
     private void handlePlane(Plane plane) {
