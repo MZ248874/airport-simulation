@@ -19,7 +19,7 @@ public class PlaneInFlightState implements PlaneState {
         plane.setDeparture(plane.getArrival());
         plane.getArrival().addPlanesServed();
         plane.getArrival().addPassengersServed(plane.getCurrentPassengers());
-        plane.setTimeToLand(0);
+        plane.setLocation(plane.getArrival().getLocation());
         SimulationStatistics.addFlight();
         SimulationStatistics.addTotalPassengers(plane.getCurrentPassengers());
         plane.setPlaneState(PlaneOnGroundState.getInstance());
@@ -32,6 +32,8 @@ public class PlaneInFlightState implements PlaneState {
     @Override
     public void crashed(Plane plane) {
         plane.setLocation(new Location(0, 0, 0));
+        plane.setArrival(null);
+        plane.setDeparture(null);
         plane.setCurrentPassengers(0);
         plane.setOperational(false);
         SimulationStatistics.addCrashedPlane(plane);

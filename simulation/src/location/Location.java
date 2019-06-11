@@ -17,7 +17,8 @@ public class Location {
     }
 
     public double distance(Location location) {
-        return Math.sqrt((location.getX() - getX()) ^ 2 + (location.getZ() - getZ()) ^ 2);
+        return Math.sqrt((location.getX() - getX()) * (location.getX() - getX()) +
+                (location.getZ() - getZ()) * (location.getZ() - getZ()));
     }
 
     public void setX(int x) {

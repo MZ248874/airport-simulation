@@ -7,6 +7,7 @@ import planes.Plane;
 import java.util.Random;
 import java.util.Vector;
 
+//Przeprowadza symulację
 public class SimulationThread extends Thread {
 
     private Vector<Plane> planes = Simulation.getPlanes();
@@ -29,31 +30,22 @@ public class SimulationThread extends Thread {
 
     private void handlePlane(Plane plane) {
         if (plane.isOperational()) {
-            int time = TIME;
-            int timeLeft = plane.getTimeToLand();
-            if (timeLeft > time) {
-                timeLeft -= time;
-                plane.setTimeToLand(timeLeft);
-                return;
-            }
-            if (timeLeft != 0) {
-                time -= timeLeft;
-                plane.land();
-            } else while (timeLeft < time) {
+            int timeLeft = 0;
+            Random random = new Random();
+            while (timeLeft < TIME) {
                 chooseFlight(plane);
 
                 //Samolot ma 1% szans na wypadek w trakcie lotu
-                if (new Random().nextInt(100) == 50) {
+                if (random.nextInt(1000) == 50) {
                     plane.crash();
                     break;
                 }
 
-                timeLeft += flightTime(plane);
-                if (timeLeft < time) plane.land();
+                int flightTime = flightTime(plane);
+
+                timeLeft += flightTime;
+                plane.land();
             }
-            plane.setTimeToLand(timeLeft - time);
-            int ratio = plane.getTimeToLand() / flightTime(plane);
-            plane.getLocation().translate(plane.getArrival().getLocation(), ratio);
         }
     }
 
@@ -78,7 +70,7 @@ public class SimulationThread extends Thread {
 
     private int flightTime(Plane plane) {
         //Obliczanie czasu lotu. Prędkość samolotu pomnożona przez 75%, aby wziąć pod uwagę czas startu i lądowania
-        return (int) (distance(plane) * 0.75 * plane.getPlaneModel().getVelocity());
+        return (int) Math.abs((distance(plane) * 0.75 * plane.getPlaneModel().getVelocity()));
     }
 
     private double distance(Plane plane) {

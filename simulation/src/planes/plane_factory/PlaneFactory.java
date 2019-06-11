@@ -4,7 +4,7 @@ import planes.Plane;
 
 import java.util.Random;
 
-public class PlaneFactory extends AbstractFactory {
+public class PlaneFactory extends AbstractPlaneFactory {
     @Override
     public Plane getPlane() {
         switch (new Random().nextInt(4)) {

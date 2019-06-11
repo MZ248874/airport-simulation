@@ -7,7 +7,7 @@ public class PlaneModel {
     private final int velocity;
     private final int flightHeight;
 
-    public PlaneModel(String make, String modelName, int maxPassengers, int velocity, int flightHeight) {
+    PlaneModel(String make, String modelName, int maxPassengers, int velocity, int flightHeight) {
         this.make = make;
         this.modelName = modelName;
         this.maxPassengers = maxPassengers;

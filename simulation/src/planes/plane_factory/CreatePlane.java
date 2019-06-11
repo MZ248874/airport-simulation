@@ -2,6 +2,6 @@ package planes.plane_factory;
 
 import planes.Plane;
 
-public interface MakePlane {
+public interface CreatePlane {
     Plane make();
 }

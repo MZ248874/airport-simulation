@@ -24,7 +24,6 @@ public final class Plane implements CSV {
     private Airport departure;
     private Airport arrival;
     private boolean isOperational;
-    private int timeToLand;
 
     private Plane(PlaneBuilder planeBuilder) {
         this.airline = planeBuilder.airline;
@@ -35,7 +34,6 @@ public final class Plane implements CSV {
         this.currentPassengers = 0;
         this.planeState = PlaneOnGroundState.getInstance();
         this.isOperational = true;
-        this.timeToLand = 0;
     }
 
     public void fly(Flight flight) {
@@ -57,13 +55,15 @@ public final class Plane implements CSV {
         String arrivalCopy;
         if (arrival != null) arrivalCopy = arrival.toString();
         else arrivalCopy = "";
+        String departureCopy;
+        if (departure != null) departureCopy = departure.toString();
+        else departureCopy = "";
         return new String[]{ID, airline,
                 planeModel.getMake(),
                 planeModel.getModelName(),
-                departure.toString(),
+                departureCopy,
                 arrivalCopy,
                 location.toString(),
-                Integer.toString(timeToLand),
                 Integer.toString(currentPassengers),
                 Boolean.toString(isOperational)};
     }
@@ -88,10 +88,6 @@ public final class Plane implements CSV {
         return ID;
     }
 
-    public String getAirline() {
-        return airline;
-    }
-
     public int getCurrentPassengers() {
         return currentPassengers;
     }
@@ -102,10 +98,6 @@ public final class Plane implements CSV {
 
     public Location getLocation() {
         return location;
-    }
-
-    public PlaneState getPlaneState() {
-        return planeState;
     }
 
     public void setCurrentPassengers(int currentPassengers) {
@@ -131,15 +123,6 @@ public final class Plane implements CSV {
     public Airport getArrival() {
         return arrival;
     }
-
-    public int getTimeToLand() {
-        return timeToLand;
-    }
-
-    public void setTimeToLand(int timeToLand) {
-        this.timeToLand = timeToLand;
-    }
-
 
     public static class PlaneBuilder {
         String airline;

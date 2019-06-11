@@ -6,7 +6,7 @@ import simulation.SimulationResources;
 
 import java.util.Random;
 
-public class A380 implements MakePlane {
+public class A380 implements CreatePlane {
     @Override
     public Plane make() {
         Random random;

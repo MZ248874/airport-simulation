@@ -3,7 +3,6 @@ package simulation;
 import airports.Airport;
 import airports.Airports;
 import airports.AirportsList;
-import planes.plane_models.PlaneModels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +21,6 @@ public class SimulationResources {
         setupAirportsList();
     }
 
-    public static final List<PlaneModels> planeModels = Arrays.asList(PlaneModels.values());
     public static final List<String> airlines = Arrays.asList("Ryanair", "WizzAir", "LOT", "Lufthansa", "KLM");
     public static List<AirportsList> AIRPORTS_LIST;
     public static List<Airport> airportsList;

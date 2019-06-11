@@ -4,9 +4,9 @@ import simulation.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
+//Pierwszy ekran GUI
 public class Intro extends JFrame {
     private JPanel intro;
     private JTextField planeNumberField;
@@ -21,34 +21,16 @@ public class Intro extends JFrame {
     }
 
     private void setup() {
-        addActionListeners();
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(400, 600);
+        addActionListeners();
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     private void addActionListeners() {
         continueButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try {
-                    int planes;
-                    planes = Integer.parseInt(planeNumberField.getText());
-                    UIHandler.getData().setPlanesNumber(planes);
-                    intro.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                    continueButton.setEnabled(false);
-//                    try {
-                    Simulation.startSimulation(UIHandler.getData().getPlanesNumber());
-//                    }
-//                    catch (Exception exce){
-//                        new JOptionPane().showMessageDialog(intro, exce.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//                    }
-                    setVisible(false);
-                    dispose();
-                    new Menu();
-                } catch (NumberFormatException exc) {
-                    new JOptionPane().showMessageDialog(intro, "Use only decimal numbers as input", "Wrong number format", JOptionPane.ERROR_MESSAGE);
-                }
+                nextWindow();
             }
 
             @Override
@@ -71,5 +53,21 @@ public class Intro extends JFrame {
 
             }
         });
+    }
+
+    private void nextWindow() {
+        try {
+            int planes;
+            planes = Integer.parseInt(planeNumberField.getText());
+            UIHandler.getData().setPlanesNumber(planes);
+            intro.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            continueButton.setEnabled(false);
+            Simulation.startSimulation(UIHandler.getData().getPlanesNumber());
+            setVisible(false);
+            dispose();
+            new Menu();
+        } catch (NumberFormatException exc) {
+            new JOptionPane().showMessageDialog(intro, "Use only decimal numbers as input", "Wrong number format", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

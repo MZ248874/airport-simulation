@@ -1,5 +1,6 @@
 package location;
 
+//Klasa do wyznaczania równania prostej
 class LinearEquation {
     private int A, B;
     private Location loc1, loc2;
@@ -28,11 +29,11 @@ class LinearEquation {
         this.B = bToFind;
     }
 
-    public int getA() {
+    int getA() {
         return A;
     }
 
-    public int getB() {
+    int getB() {
         return B;
     }
 }

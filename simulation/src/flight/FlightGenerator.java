@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//Generuje lot
 class FlightGenerator {
     private static FlightGenerator ourInstance = new FlightGenerator();
 
@@ -32,7 +33,6 @@ class FlightGenerator {
         int randomImportance = new Random().nextInt(100);
 
         //Tworzy kopię listy lotnisk dla pojedynczego użycia
-//        List<AirportsList> airportsListCopy = AIRPORTS_LIST;
         List<Airport> airportsListCopy = new ArrayList<>(List.copyOf(SimulationResources.airportsList));
         //Usuwa lotnisko, na którym aktualnie znajduje się samolot
         airportsListCopy.remove(airport);

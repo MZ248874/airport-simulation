@@ -49,24 +49,12 @@ public final class Airport implements CSV {
         return name;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Location getLocation() {
         return location;
     }
 
     public int getImportance() {
         return importance;
-    }
-
-    public long getPassengersServed() {
-        return passengersServed;
-    }
-
-    public long getPlanesServed() {
-        return planesServed;
     }
 
     public void addPassengersServed(int passengers) {
@@ -79,10 +67,6 @@ public final class Airport implements CSV {
 
     public void addFlight(Flight flight) {
         flights.add(flight);
-    }
-
-    public void removeFlight(int index) {
-            flights.remove(index);
     }
 
     public void removeFlight(Flight flight) {

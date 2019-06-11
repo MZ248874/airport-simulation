@@ -2,8 +2,11 @@ package flight;
 
 import airports.Airport;
 import airports.Airports;
-import airports.AirportsList;
+import simulation.SimulationResources;
 
+import java.util.Random;
+
+//Zawiera cel podróży i liczbę pasażerów
 public class Flight {
 
     private final Airport destination;
@@ -16,7 +19,9 @@ public class Flight {
     }
 
     public Flight(int passengers) {
-        this.destination = Airports.getAirport(AirportsList.BERLIN);
+        Random randomAirport = new Random();
+        this.destination = Airports.getAirport(SimulationResources.AIRPORTS_LIST.
+                get(randomAirport.nextInt(SimulationResources.AIRPORTS_LIST.size())));
         this.passengers = passengers;
     }
 

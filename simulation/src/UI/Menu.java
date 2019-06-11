@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
+//Drugi ekran GUI
 public class Menu extends JFrame {
     private JPanel mainWindow;
     private JButton finishButton;
@@ -161,7 +162,7 @@ public class Menu extends JFrame {
             if (Desktop.isDesktopSupported()) {
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int dialogResult = JOptionPane.showConfirmDialog(mainWindow,
-                        "Would You like to open your file?",
+                        "Would you like to open your file?",
                         "Results",
                         dialogButton);
                 if (dialogResult == JOptionPane.YES_OPTION) {

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+//Generuje plik CSV
 public class DataOutput {
 
     private String filePath;
@@ -71,7 +72,6 @@ public class DataOutput {
                     "Departure",
                     "Arrival",
                     "Location",
-                    "Time to land",
                     "Current passengers",
                     "Is operational"};
             output.writeNext(header4);
