@@ -35,7 +35,7 @@ public class SimulationThread extends Thread {
             while (timeLeft < TIME) {
                 chooseFlight(plane);
 
-                //Samolot ma 1% szans na wypadek w trakcie lotu
+                //Samolot ma 0,1% szans na wypadek w trakcie lotu
                 if (random.nextInt(1000) == 50) {
                     plane.crash();
                     break;
