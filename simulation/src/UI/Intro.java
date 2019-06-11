@@ -65,7 +65,14 @@ public class Intro extends JFrame {
             Simulation.startSimulation(UIHandler.getData().getPlanesNumber());
             setVisible(false);
             dispose();
-            new Menu();
+
+            Menu menu = new Menu();
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Dimension screenSize = toolkit.getScreenSize();
+            int x = (screenSize.width - menu.getWidth()) / 2;
+            int y = (screenSize.height - menu.getHeight()) / 2;
+            menu.setLocation(x, y);
+
         } catch (NumberFormatException exc) {
             new JOptionPane().showMessageDialog(intro, "Use only decimal numbers as input", "Wrong number format", JOptionPane.ERROR_MESSAGE);
         }

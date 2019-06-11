@@ -19,7 +19,6 @@ public class UIHandler {
         JFrame intro = new Intro();
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
-        System.out.println(screenSize);
         int x = (screenSize.width - intro.getWidth()) / 2;
         int y = (screenSize.height - intro.getHeight()) / 2;
         intro.setLocation(x, y);
