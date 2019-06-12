@@ -53,6 +53,14 @@ public class Intro extends JFrame {
 
             }
         });
+
+        continueButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) nextWindow();
+            }
+        });
     }
 
     private void nextWindow() {
@@ -67,11 +75,7 @@ public class Intro extends JFrame {
             dispose();
 
             Menu menu = new Menu();
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int x = (screenSize.width - menu.getWidth()) / 2;
-            int y = (screenSize.height - menu.getHeight()) / 2;
-            menu.setLocation(x, y);
+            menu.setLocationRelativeTo(intro);
 
         } catch (NumberFormatException exc) {
             new JOptionPane().showMessageDialog(intro, "Use only decimal numbers as input", "Wrong number format", JOptionPane.ERROR_MESSAGE);
